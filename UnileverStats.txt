@@ -1,0 +1,1 @@
+closingPrices SMA12 SMA26 EMA12 EMA26 MOM25 TBR24 VOL29 EMAAction TBRAction VOLAction MOMAction
