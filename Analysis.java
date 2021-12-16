@@ -1,46 +1,16 @@
 public class Analysis {
-
-  public static double getMean(double[] prices) {
-    double sum = 0;
-    for (int i = 0; i < prices.length; i++) {
-      sum += prices[i];
-    }
-    return sum / prices.length;
-  }
-
-  public static double getStandardDeviation(double[] prices) {
-    double mean = getMean(prices);
-    double sumOfDiffSqrd = 0;
-
-    for (int i = 0; i < prices.length; i++) {
-      sumOfDiffSqrd += Math.pow(prices[i] - mean, 2);
-    }
-
-    return Math.sqrt(sumOfDiffSqrd / prices.length);
-
-  }
-
-  public static int getMaxIndex(double[] prices) {
-    int maxIndex = 0;
-
-    for (int i = 0; i < prices.length; i++) {
-      if (prices[i] > prices[maxIndex]) {
-        maxIndex = i;
-      }
-    }
-    return maxIndex;
-  }
+  // ########## TECHNICAL INDICATORS ##########
 
   public static double simpleMovingAverage(int periodLength, int currentTime, double[] prices) {
     double sum = 0;
     for (int i = 1; i <= periodLength; i++) {
       sum += prices[currentTime - i];
     }
-    return sum / periodLength;
+    return Helpers.round(sum / periodLength, 6);
   }
 
   public static double momentum(int periodLength, int currentTime, double[] prices) {
-    return prices[currentTime] - prices[currentTime - periodLength];
+    return Helpers.round(prices[currentTime] - prices[currentTime - periodLength], 6);
   }
 
   public static double exponentialMovingAverage(int periodLength, int currentTime, double[] prices, double smoothing,
@@ -50,7 +20,7 @@ public class Analysis {
     double part1 = prices[currentTime] * smoothingFactor;
     double part2 = emaValues[currentTime - 1] * (1 - smoothingFactor);
 
-    return part1 + part2;
+    return Helpers.round(part1 + part2, 6);
   }
 
   public static double tradeBreakoutRule(int periodLength, int currentTime, double[] prices) {
@@ -60,8 +30,8 @@ public class Analysis {
       periodPrices[i - 1] = prices[currentTime - i];
     }
 
-    double maxPrice = periodPrices[getMaxIndex(periodPrices)];
-    return (prices[currentTime] - maxPrice) / (maxPrice);
+    double maxPrice = periodPrices[Helpers.getMaxIndex(periodPrices)];
+    return Helpers.round((prices[currentTime] - maxPrice) / (maxPrice), 6);
 
   }
 
@@ -72,9 +42,54 @@ public class Analysis {
       periodPrices[i - 1] = prices[currentTime - i];
     }
 
-    double standardDev = getStandardDeviation(periodPrices);
+    double standardDev = Helpers.getStandardDeviation(periodPrices);
     double sma = simpleMovingAverage(periodLength, currentTime, prices);
 
-    return standardDev / sma;
+    return Helpers.round(standardDev / sma, 6);
   }
+
+  // #####################################
+  // ########## TRADING SIGNALS ##########
+
+  public static int emaTradingSignal(double ema12, double ema26) {
+    if (ema12 > ema26) {
+      return 1;
+    } else if (ema12 < ema26) {
+      return 2;
+    } else {
+      return 0;
+    }
+  }
+
+  public static int tbrTradingSignal(double tbr24) {
+    if (tbr24 > -0.02) {
+      return 1;
+    } else if (tbr24 < -0.02) {
+      return 2;
+    } else {
+      return 0;
+    }
+  }
+
+  public static int volTradingSignal(double vol29) {
+    if (vol29 > 0.02) {
+      return 1;
+    } else if (vol29 < 0.02) {
+      return 2;
+    } else {
+      return 0;
+    }
+  }
+
+  public static int momTradingSignal(double mom25) {
+    if (mom25 > 0) {
+      return 1;
+    } else if (mom25 < 0) {
+      return 2;
+    } else {
+      return 0;
+    }
+  }
+
+  // ####################################
 }
