@@ -2,7 +2,7 @@
 An assessment for my Computational Intelligence in Business Economics and Finance module to optimise a technical analysis trading strategy by using a genetic algorihtm. We had to write code that would carry out trades on a given stock every day, buying or selling depending on signals generated from technical indicators.
 
 <h1> Aim of assessment </h1>
-The aim of this assessment was to test our knowledge on what we had learnt about genetic algorithms, techical anlysis and the stock market.
+The aim of this assessment was to test our knowledge on what we had learnt about genetic algorithms, technical analysis and the stock market.
 
 <h1> Mark recieved for assessment </h1>
 I recieved 99% for this assessment.
